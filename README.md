@@ -134,7 +134,7 @@ browsing data
 
 	#年龄分段
 	train_df['age_range'] = pd.cut(train_df['Age'], [0,20,30,65,100], labels=["0-20", "21-30", "31-65", "66-100"], include_lowest=True)
-
+	
 
         #清洗清洗'self_employed'的数据
 	#由于只有0.014%的自雇人士，因此用NOT self_employed代替NaN
@@ -229,14 +229,12 @@ browsing data
 	plt.title('Probability of mental health condition')
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Age')
-	# replace legend labels
-
+	
+	# 替换图例标签
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
-	# Positioning the legend
 	g.fig.subplots_adjust(top=0.9,right=0.8)
-
 	plt.show()
 
 
@@ -248,15 +246,12 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Family History')
 
-	# replace legend labels
+	# 替换图例标签
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
-	# Positioning the legend
 	g.fig.subplots_adjust(top=0.9,right=0.8)
-
 	plt.show()
-
 
 
 	#提供心理健康护理情况和性别汇总分布
@@ -267,11 +262,10 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Care options')
 
-	# replace legend labels
+	# 替换图例标签
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
-	# Positioning the legend
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
 
@@ -285,11 +279,10 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Benefits')
 
-	# replace legend labels
+	# 替换图例标签
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
-	# Positioning the legend
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
 
@@ -302,16 +295,12 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Work interfere')
 
-	# replace legend labels
+	# 替换图例标签
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
-	# Positioning the legend
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
-
-
 
 缩放和拟合
 
@@ -320,7 +309,6 @@ browsing data
 	train_df['Age'] = scaler.fit_transform(train_df[['Age']])
 	train_df.head()
 
-
 	# 分离数据集
 	feature_cols = ['Age', 'Gender', 'family_history', 'benefits', 'care_options', 'anonymity', 'leave', 'work_interfere']
 	X = train_df[feature_cols]
@@ -328,11 +316,9 @@ browsing data
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
 
-
 	# 创建字典用作最后的图形汇总
 	methodDict = {}
 	rmseDict = ()
-
 
 	# 建立森林并计算特征重要性
 	forest = ExtraTreesClassifier(n_estimators=250,random_state=0)
@@ -358,126 +344,97 @@ browsing data
 分类模型评估指标
 
 	def evalClassModel(model, y_test, y_pred_class, plot=False):
-	    #Classification accuracy: percentage of correct predictions
-	    # calculate accuracy
+	    # 分类准确率
 	    print('Accuracy:', metrics.accuracy_score(y_test, y_pred_class))
 	    
-	    #Null accuracy: accuracy that could be achieved by always predicting the most frequent class
+	    #空准确率
 	    # examine the class distribution of the testing set (using a Pandas Series method)
 	    print('Null accuracy:\n', y_test.value_counts())
 	    
-	    # calculate the percentage of ones
+	    # percentage of ones
 	    print('Percentage of ones:', y_test.mean())
 	    
-	    # calculate the percentage of zeros
+	    # percentage of zeros
 	    print('Percentage of zeros:',1 - y_test.mean())
 	    
-	    #Comparing the true and predicted response values
+	    #比较真实和预测的响应值
 	    print('True:', y_test.values[0:25])
 	    print('Pred:', y_pred_class[0:25])
 	    
-	    #Conclusion:
-	    #Classification accuracy is the easiest classification metric to understand
-	    #But, it does not tell you the underlying distribution of response values
-	    #And, it does not tell you what "types" of errors your classifier is making
-	    
-	    #Confusion matrix
-	    # save confusion matrix and slice into four pieces
+	    #混淆矩阵
 	    confusion = metrics.confusion_matrix(y_test, y_pred_class)
-	    #[row, column]
+	    #[行, 列]
 	    TP = confusion[1, 1]
 	    TN = confusion[0, 0]
 	    FP = confusion[0, 1]
 	    FN = confusion[1, 0]
 	    
-	    # visualize Confusion Matrix
+	    # 可视化混淆矩阵
 	    sns.heatmap(confusion,annot=True,fmt="d") 
 	    plt.title('Confusion Matrix')
 	    plt.xlabel('Predicted')
 	    plt.ylabel('Actual')
 	    plt.show()
 	    
-	    #Metrics computed from a confusion matrix
+	    #根据混淆矩阵计算度量
 	    #Classification Accuracy: Overall, how often is the classifier correct?
 	    accuracy = metrics.accuracy_score(y_test, y_pred_class)
 	    print('Classification Accuracy:', accuracy)
 	    
-	    #Classification Error: Overall, how often is the classifier incorrect?
+	    #分类错误得分
 	    print('Classification Error:', 1 - metrics.accuracy_score(y_test, y_pred_class))
 	    
-	    #False Positive Rate: When the actual value is negative, how often is the prediction incorrect?
+	    #取伪率
 	    false_positive_rate = FP / float(TN + FP)
 	    print('False Positive Rate:', false_positive_rate)
 	    
-	    #Precision: When a positive value is predicted, how often is the prediction correct?
+	    #精度
 	    print('Precision:', metrics.precision_score(y_test, y_pred_class))
-	    
-	    
-	    # IMPORTANT: first argument is true values, second argument is predicted probabilities
+	  
+	    # AUC得分
 	    print('AUC Score:', metrics.roc_auc_score(y_test, y_pred_class))
 	    
-	    # calculate cross-validated AUC
+	    # 计算交叉验证的AUC
 	    print('Cross-validated AUC:', cross_val_score(model, X, y, cv=10, scoring='roc_auc').mean())
 	    
-	    ##########################################
-	    #Adjusting the classification threshold
-	    ##########################################
-	    # print the first 10 predicted responses
-	    # 1D array (vector) of binary values (0, 1)
+	
+	
+	    # 调整分类阈值
+	    
+	    # 打印前10个预测值和分类成员资格概率
 	    print('First 10 predicted responses:\n', model.predict(X_test)[0:10])
-
-	    # print the first 10 predicted probabilities of class membership
 	    print('First 10 predicted probabilities of class members:\n', model.predict_proba(X_test)[0:10])
 
-	    # print the first 10 predicted probabilities for class 1
+	    # 第1类的前10个预测概率并保存
 	    model.predict_proba(X_test)[0:10, 1]
-	    
-	    # store the predicted probabilities for class 1
 	    y_pred_prob = model.predict_proba(X_test)[:, 1]
 	    
 	    if plot == True:
-	        # histogram of predicted probabilities
-	        # adjust the font size 
+	        # 直方图可视化预测的概率
 	        plt.rcParams['font.size'] = 12
-	        # 8 bins
 	        plt.hist(y_pred_prob, bins=8)
 	        
-	        # x-axis limit from 0 to 1
 	        plt.xlim(0,1)
 	        plt.title('Histogram of predicted probabilities')
 	        plt.xlabel('Predicted probability of treatment')
 	        plt.ylabel('Frequency')
 	    
 	    
-	    # predict treatment if the predicted probability is greater than 0.3
-	    # it will return 1 for all values above 0.3 and 0 otherwise
-	    # results are 2D so we slice out the first column
+	    # 若预测概率大于0.3，则预测治疗情况
 	    y_pred_prob = y_pred_prob.reshape(-1,1) 
 	    y_pred_class = binarize(y_pred_prob, 0.3)[0]
 	    
-	    # print the first 10 predicted probabilities
+	    # 打印前10个预测值
 	    print('First 10 predicted probabilities:\n', y_pred_prob[0:10])
 	    
-	    ##########################################
-	    #ROC Curves and Area Under the Curve (AUC)
-	    ##########################################
+	
+	
+	
+	    #ROC曲线和曲线下面积（AUC）
 	    
-	    #Question: Wouldn't it be nice if we could see how sensitivity and specificity are affected by various thresholds, without actually changing the threshold?
-	    #Answer: Plot the ROC curve!
-	    
-	    
-	    #AUC is the percentage of the ROC plot that is underneath the curve
-	    #Higher value = better classifier
 	    roc_auc = metrics.roc_auc_score(y_test, y_pred_prob)
 	    
-	    
-
-	    # IMPORTANT: first argument is true values, second argument is predicted probabilities
-	    # we pass y_test and y_pred_prob
-	    # we do not use y_pred_class, because it will give incorrect results without generating an error
-	    # roc_curve returns 3 objects fpr, tpr, thresholds
-	    # fpr: false positive rate
-	    # tpr: true positive rate
+	    # roc_curve 返回3个对象，误报率，真阳性率和阈值
 	    fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_prob)
 	    if plot == True:
 	        plt.figure()
@@ -493,36 +450,23 @@ browsing data
 	        plt.legend(loc="lower right")
 	        plt.show()
 	    
-	    # define a function that accepts a threshold and prints sensitivity and specificity
+	    # 定义一个接受阈值并打印灵敏度和特异性的函数
 	    def evaluate_threshold(threshold):
-	        #Sensitivity: When the actual value is positive, how often is the prediction correct?
-	        #Specificity: When the actual value is negative, how often is the prediction correct?print('Sensitivity for ' + str(threshold) + ' :', tpr[thresholds > threshold][-1])
 	        print('Specificity for ' + str(threshold) + ' :', 1 - fpr[thresholds > threshold][-1])
 
-	    # One way of setting threshold
+	    # 设置阈值
 	    predict_mine = np.where(y_pred_prob > 0.50, 1, 0)
 	    confusion = metrics.confusion_matrix(y_test, predict_mine)
 	    print(confusion)
-	    
-	    
-	    
+
 	    return accuracy
 
 
+使用交叉验证分数进行调整
 
-
-
-
-
-
-
-
-	    ##########################################
-	# Tuning with cross validation score
-	##########################################
 	def tuningCV(knn):
 	    
-	    # search for an optimal value of K for KNN
+	    # 为KNN搜索K的最佳值
 	    k_range = list(range(1, 31))
 	    k_scores = []
 	    for k in k_range:
@@ -530,18 +474,13 @@ browsing data
 	        scores = cross_val_score(knn, X, y, cv=10, scoring='accuracy')
 	        k_scores.append(scores.mean())
 	    print(k_scores)
-	    # plot the value of K for KNN (x-axis) versus the cross-validated accuracy (y-axis)
+
 	    plt.plot(k_range, k_scores)
 	    plt.xlabel('Value of K for KNN')
 	    plt.ylabel('Cross-Validated Accuracy')
 	    plt.show()
 
-
-
-
-
-
-
+使用GridSearchCV进行调整
 
 	    def tuningGridSerach(knn):
 	    #More efficient parameter tuning using GridSearchCV
