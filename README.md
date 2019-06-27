@@ -1,15 +1,24 @@
 ## Table of Contents  
-### Part I: Research background  
-### Part II: Data Description  
-### Part III: Data Processing  
-### Part IV: Data Visualization
-### Part V: Machine Learning
-### Part VI: Analysis Results  
-
-
+##### Part I: Research background  
+##### Part II: Data Description  
+##### Part III: Data Processing  
+##### Part IV: Data Visualization
+##### Part V: Machine Learning
+##### Part VI: Analysis Results  
+   
+   
+   
+   
+   
+   
 ## Part I: Research background  
 The data comes from the osmi website, the full name of Open Sourcing Mental Illness. The survey data used this time is a 2014 questionnaire, about the mental health status of people in the field of science and technology, and more than 1,200 survey results.
-
+  
+  
+  
+  
+  
+  
 ## Part II: Data Description   
 >Age  
 >Gender  
@@ -38,8 +47,12 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 >Comments  
 >Timestamp  
 >State  
-
-
+  
+  
+  
+  
+  
+  
 ## Part III: Data Processing   
 
 ### Import data packets and see the data structure
