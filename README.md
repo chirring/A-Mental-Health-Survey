@@ -1,3 +1,48 @@
+## Table of Contents  
+## Part I: Research background  
+## Part II: Data Description  
+## Part III: Data Processing  
+## Part IV: Data Visualization
+## Part V: Machine Learning
+## Part VI: Analysis Results  
+
+
+## Part I: Research background  
+The data comes from the osmi website, the full name of Open Sourcing Mental Illness. The survey data used this time is a 2014 questionnaire, about the mental health status of people in the field of science and technology, and more than 1,200 survey results.
+
+## Part II: Data Description   
+>Age  
+>Gender  
+>Country   
+>Self_employed: Whether self-employed  
+>Family_history: Is there a family history of mental illness?  
+>Treatment : whether it has been treated (subsequent main analysis fields)  
+>Work_interfere: Does the disease affect work?  
+>No_employees: number of employees  
+>Remote_work : Whether to work outside for a long time  
+>Tech_company : Is it a technology company?  
+>Benefits: Does your employer provide mental health benefits?  
+>Care_options: Your employer offers a choice of mental health care  
+>Wellness_program: Discuss mental health as part of an employee health plan?  
+>Seek_help: Does your employer provide resources to learn more about mental health issues?  
+>Anonymity: Is there treatment for anonymous protection?  
+>Leave: Is it easy to leave medication?  
+>Mental_health_consequence : Discuss with employers whether mental health has an adverse effect  
+>Phys_health_consequence: Discuss with employers whether physical health has an adverse effect  
+>Coworkers: Willing to discuss with colleagues?  
+>Supervisor: Will you discuss with your immediate supervisor?  
+>Mental_health_interview: Will mental health be discussed during the interview?  
+>Phys_health_interview: Will you discuss your health during the interview?  
+>Mental_vs_physical: Does the employer think that mental health is as important as physical health?  
+>Obs_consequence: Has your colleague been affected by mental health?  
+>Comments  
+>Timestamp  
+>State  
+
+
+## Part III: Data Processing   
+
+### Import data packets and see the data structure
 	import numpy as np # linear algebra
 	import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 	import matplotlib.pyplot as plt
@@ -12,51 +57,40 @@
 	from sklearn.datasets import make_classification
 	from sklearn.preprocessing import binarize, LabelEncoder, MinMaxScaler
 
-训练模型，归一化准备  
-
+	#Training model, preparing for normalization 
 	from sklearn.linear_model import LogisticRegression
 	from sklearn.tree import DecisionTreeClassifier
 	from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
-导入模型  
-
+	#Import model 
 	from sklearn import metrics
 	from sklearn.metrics import accuracy_score, mean_squared_error, precision_recall_curve
 	from sklearn.model_selection import cross_val_score
 
-神经网络
-
+	#Neural Networks
 	from sklearn.neural_network import MLPClassifier
 	from sklearn.grid_search import RandomizedSearchCV
 
-Bagging
-
+	#Bagging
 	from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 	from sklearn.neighbors import KNeighborsClassifier
 
-Naive bayes
-
+	#Naive bayes
 	from sklearn.naive_bayes import GaussianNB 
 
-Stacking
-
+	#Stacking
 	from mlxtend.classifier import StackingClassifier
 
-reading data
-
+	#reading data
 	train_df = pd.read_csv('../input/survey.csv')
 
-browsing data
-
+	#browsing data
 	print(train_df.shape)
 	print(train_df.describe())
 	print(train_df.info())
 
 
-
-1.数据清洗
-
-删除无用字段"Timestamp",“comments”, “state”
+#### Delete useless fields "Timestamp", "comments", "state"
 
 	train_df = train_df.drop(['comments'], axis= 1)
 	train_df = train_df.drop(['state'], axis= 1)
@@ -65,16 +99,14 @@ browsing data
 	train_df.isnull().sum().max() #just checking that there's no missing data missing...
 	train_df.head(5)
 
-
-
-统一数据值
+#### Unified data value
 	
-	#默认数据
+	#Default data
 	defaultInt = 0
 	defaultString = 'NaN'
 	defaultFloat = 0.0
 
-	#需要处理的字段
+	#Fields to be processed
 	intFeatures = ['Age']
 	stringFeatures = ['Gender', 'Country', 'self_employed', 'family_history', 'treatment', 'work_interfere',
 	                 'no_employees', 'remote_work', 'tech_company', 'anonymity', 'leave', 'mental_health_consequence',
@@ -83,7 +115,7 @@ browsing data
 	                 'seek_help']
 	floatFeatures = []
 
-	#清除Nan
+	#Clear Nan
 	for feature in train_df:
 	    if feature in intFeatures:
 	        train_df[feature] = train_df[feature].fillna(defaultInt)
@@ -96,11 +128,11 @@ browsing data
 	train_df.head(5)  
 
 
-	#清洗'Gender'的数据
+	#Clean the data of 'Gender'
 	gender = train_df['Gender'].str.lower()
 	gender = train_df['Gender'].unique()
 
-	#文本数据标准化
+	#Text data standardization
 	male_str = ["male", "m", "male-ish", "maile", "mal", "male (cis)", "make", "male ", "man","msle", "mail", "malr","cis man", "Cis Male", "cis male"]
 	trans_str = ["trans-female", "something kinda male?", "queer/she/they", "non-binary","nah", "all", "enby", "fluid", "genderqueer", "androgyne", "agender", "male leaning androgynous", "guy (-ish) ^_^", "trans woman", "neuter", "female (trans)", "queer", "ostensibly male, unsure what that really means"]           
 	female_str = ["cis female", "f", "female", "woman",  "femake", "female ","cis-female/femme", "female (cis)", "femail"]
@@ -113,18 +145,17 @@ browsing data
 	    if str.lower(col.Gender) in trans_str:
 	        train_df['Gender'].replace(to_replace=col.Gender, value='trans', inplace=True)
 
-	#剩余文本另外处理
+	#Additional text is processed separately
 	stk_list = ['A little about you', 'p']
 	train_df = train_df[~train_df['Gender'].isin(stk_list)]
-	
 	
 	print(train_df['Gender'].unique())
 
 
-	#清洗'Age'的数据
+	#Cleaning 'Age' data
 	train_df['Age'].fillna(train_df['Age'].median(), inplace = True)
 
-	#年龄小于18 或者 大于120的，用平均值代替
+	#If the age is less than 18 or greater than 120, replace it with the average
 	s = pd.Series(train_df['Age'])
 	s[s<18] = train_df['Age'].median()
 	train_df['Age'] = s
@@ -132,25 +163,25 @@ browsing data
 	s[s>120] = train_df['Age'].median()
 	train_df['Age'] = s
 
-	#年龄分段
+	#Age segmentation
 	train_df['age_range'] = pd.cut(train_df['Age'], [0,20,30,65,100], labels=["0-20", "21-30", "31-65", "66-100"], include_lowest=True)
 	
 
-        #清洗清洗'self_employed'的数据
-	#由于只有0.014%的自雇人士，因此用NOT self_employed代替NaN
+        #Cleaning the data of 'self_employed'
+	#Since only 0.014% of self-employed people, use NOT self_employed instead of NaN
 	train_df['self_employed'] = train_df['self_employed'].replace([defaultString], 'No')
 	print(train_df['self_employed'].unique())
 
 
-	#清洗清洗'work_interfere'的数据
-	#由于只有0.20%的self work_interfere，因此用"Don't know代替NaN
+	#Clean the data of 'work_interfere'
+	#Since only 0.20% of self work_interfere, use "Don't know instead of NaN
 	train_df['work_interfere'] = train_df['work_interfere'].replace([defaultString], 'Don\'t know' )
 	print(train_df['work_interfere'].unique())
 
 
-数据归一化
+#### Data normalization
 
-	#数据编码
+	#Data encoding
 	labelDict = {}
 	for feature in train_df:
 	    le = preprocessing.LabelEncoder()
@@ -165,13 +196,11 @@ browsing data
 	for key, value in labelDict.items():     
 	    print(key, value)
 
-	#删除列'Country'
+	#Delete column 'Country'
 	train_df = train_df.drop(['Country'], axis= 1)
 	train_df.head()
 
-
-
-	#查看是否还存在缺失数据
+	#See if there are still missing data
 	total = train_df.isnull().sum().sort_values(ascending=False)
 	percent = (train_df.isnull().sum()/train_df.isnull().count()).sort_values(ascending=False)
 	missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
@@ -179,39 +208,38 @@ browsing data
 	print(missing_data)
 
 
+## Part III: Data Visualization
+### Explore the relationship between data
 
-
-探索数据间的关系
-
-	#协方差矩阵
+	#Covariance matrix
 	corrmat = train_df.corr()
 	f, ax = plt.subplots(figsize=(12, 9))
 	sns.heatmap(corrmat, vmax=.8, square=True);
 	plt.show()
 
-	#处理矩阵
-	k = 10 #选取10相关关系最密切的10个因素
+	#Processing matrix
+	k = 10 #Select 10 factors with the 10 closest correlations
 	cols = corrmat.nlargest(k, 'treatment')['treatment'].index
 	cm = np.corrcoef(train_df[cols].values.T)
 	sns.set(font_scale=1.25)
 	hm = sns.heatmap(cm, cbar=True, annot=True, square=True, fmt='.2f', annot_kws={'size': 10}, yticklabels=cols.values, xticklabels=cols.values)
 	plt.show()
 
-数据可视化
+## Part IV: Data Visualization
 
-	# 年龄分布和密度分布
+### Age distribution and density distribution
 	plt.figure(figsize=(12,8))
 	sns.distplot(train_df["Age"], bins=24)
 	plt.title("Distribuition and density by Age")
 	plt.xlabel("Age")
 
 
-	# 在是否接受过治疗下的年龄分布
+### Age distribution under treatment
 	g = sns.FacetGrid(train_df, col='treatment', size=5)
 	g = g.map(sns.distplot, "Age")
 
 
-	# 接受过治疗的人数
+### Number of people who have received treatment
 	plt.figure(figsize=(12,8))
 	labels = labelDict['label_Gender']
 	g = sns.countplot(x="treatment", data=train_df)
@@ -220,7 +248,7 @@ browsing data
 	plt.title('Total Distribuition by treated or not')	
 
 
-	#年龄和性别分布汇总
+### Summary of age and gender distribution
 	o = labelDict['label_age_range']
 
 	g = sns.factorplot(x="age_range", y="treatment", hue="Gender", data=train_df, kind="bar",  ci=None, size=5, aspect=2, legend_out = True)
@@ -230,7 +258,7 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Age')
 	
-	# 替换图例标签
+	# Replace legend label
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
@@ -238,7 +266,7 @@ browsing data
 	plt.show()
 
 
-	#性别和家庭史的汇总分布
+### Summary distribution of gender and family history
 	o = labelDict['label_family_history']
 	g = sns.factorplot(x="family_history", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -246,7 +274,7 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Family History')
 
-	# 替换图例标签
+	# Replace legend label
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
@@ -254,7 +282,7 @@ browsing data
 	plt.show()
 
 
-	#提供心理健康护理情况和性别汇总分布
+### Provide mental health care and gender summary distribution
 	o = labelDict['label_care_options']
 	g = sns.factorplot(x="care_options", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -262,7 +290,7 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Care options')
 
-	# 替换图例标签
+	# Replace legend label
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
@@ -271,7 +299,7 @@ browsing data
 
 
 
-	#提供精神健康福利情况和性别汇总分布
+### Provide mental health benefits and gender distribution
 	o = labelDict['label_benefits']
 	g = sns.factorplot(x="care_options", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -279,7 +307,7 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Benefits')
 
-	# 替换图例标签
+	# Replace legend label
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
@@ -287,7 +315,7 @@ browsing data
 	plt.show()
 
 
-	#对工作影响和性别汇总分布
+### Work impact and gender summary distribution
 	o = labelDict['label_work_interfere']
 	g = sns.factorplot(x="work_interfere", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -295,32 +323,34 @@ browsing data
 	plt.ylabel('Probability x 100')
 	plt.xlabel('Work interfere')
 
-	# 替换图例标签
+	# Replace legend label
 	new_labels = labelDict['label_Gender']
 	for t, l in zip(g._legend.texts, new_labels): t.set_text(l)
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
 
-缩放和拟合
 
-	# 用"Age"特征缩放,因为它与其他字段及其不同
+## Part V: Machine Learning
+### Scaling and fitting
+
+	# Scale with the "Age" feature because it is different from other fields
 	scaler = MinMaxScaler()
 	train_df['Age'] = scaler.fit_transform(train_df[['Age']])
 	train_df.head()
 
-	# 分离数据集
+	# Separate data set
 	feature_cols = ['Age', 'Gender', 'family_history', 'benefits', 'care_options', 'anonymity', 'leave', 'work_interfere']
 	X = train_df[feature_cols]
 	y = train_df.treatment
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
 
-	# 创建字典用作最后的图形汇总
+	# Create a dictionary to use as the final graphic summary
 	methodDict = {}
 	rmseDict = ()
 
-	# 建立森林并计算特征重要性
+	# Establish forest and calculate the importance of features
 	forest = ExtraTreesClassifier(n_estimators=250,random_state=0)
 
 	forest.fit(X, y)
@@ -341,13 +371,13 @@ browsing data
 	plt.show()
 
 
-分类模型评估指标
+### Classification model evaluation
 
 	def evalClassModel(model, y_test, y_pred_class, plot=False):
-	    # 分类准确率
+	    # Classification accuracy
 	    print('Accuracy:', metrics.accuracy_score(y_test, y_pred_class))
 	    
-	    #空准确率
+	    #NULL accuracy
 	    # examine the class distribution of the testing set (using a Pandas Series method)
 	    print('Null accuracy:\n', y_test.value_counts())
 	    
@@ -357,60 +387,59 @@ browsing data
 	    # percentage of zeros
 	    print('Percentage of zeros:',1 - y_test.mean())
 	    
-	    #比较真实和预测的响应值
+	    #Compare real and predicted responses
 	    print('True:', y_test.values[0:25])
 	    print('Pred:', y_pred_class[0:25])
 	    
-	    #混淆矩阵
+	    #Confusion matrix
 	    confusion = metrics.confusion_matrix(y_test, y_pred_class)
-	    #[行, 列]
+	    #[Row, column]
 	    TP = confusion[1, 1]
 	    TN = confusion[0, 0]
 	    FP = confusion[0, 1]
 	    FN = confusion[1, 0]
 	    
-	    # 可视化混淆矩阵
+	    # Visual confusion matrix
 	    sns.heatmap(confusion,annot=True,fmt="d") 
 	    plt.title('Confusion Matrix')
 	    plt.xlabel('Predicted')
 	    plt.ylabel('Actual')
 	    plt.show()
 	    
-	    #根据混淆矩阵计算度量
+	    #Calculate metrics based on confusion matrix
 	    #Classification Accuracy: Overall, how often is the classifier correct?
 	    accuracy = metrics.accuracy_score(y_test, y_pred_class)
 	    print('Classification Accuracy:', accuracy)
 	    
-	    #分类错误得分
+	    #Classification error score
 	    print('Classification Error:', 1 - metrics.accuracy_score(y_test, y_pred_class))
 	    
-	    #取伪率
+	    #False Positive Rate
 	    false_positive_rate = FP / float(TN + FP)
 	    print('False Positive Rate:', false_positive_rate)
 	    
-	    #精度
+	    #Precision
 	    print('Precision:', metrics.precision_score(y_test, y_pred_class))
 	  
-	    # AUC得分
+	    # AUC Score
 	    print('AUC Score:', metrics.roc_auc_score(y_test, y_pred_class))
 	    
-	    # 计算交叉验证的AUC
+	    # Cross-validated AUC
 	    print('Cross-validated AUC:', cross_val_score(model, X, y, cv=10, scoring='roc_auc').mean())
 	    
 	
-	
-	    # 调整分类阈值
+### Adjust classification threshold
 	    
-	    # 打印前10个预测值和分类成员资格概率
+	    # Print the top 10 predicted values and classification membership probability
 	    print('First 10 predicted responses:\n', model.predict(X_test)[0:10])
 	    print('First 10 predicted probabilities of class members:\n', model.predict_proba(X_test)[0:10])
 
-	    # 第1类的前10个预测概率并保存
+	    # Print the first 10 predicted probabilities of category 1 and save
 	    model.predict_proba(X_test)[0:10, 1]
 	    y_pred_prob = model.predict_proba(X_test)[:, 1]
 	    
 	    if plot == True:
-	        # 直方图可视化预测的概率
+	        # Histogram visual prediction probability
 	        plt.rcParams['font.size'] = 12
 	        plt.hist(y_pred_prob, bins=8)
 	        
@@ -420,21 +449,19 @@ browsing data
 	        plt.ylabel('Frequency')
 	    
 	    
-	    # 若预测概率大于0.3，则预测治疗情况
+	    # Predictive treatment if the predicted probability is greater than 0.3
 	    y_pred_prob = y_pred_prob.reshape(-1,1) 
 	    y_pred_class = binarize(y_pred_prob, 0.3)[0]
 	    
-	    # 打印前10个预测值
+	    # Print the first 10 predicted values
 	    print('First 10 predicted probabilities:\n', y_pred_prob[0:10])
 	    
 	
-	
-	
-	    #ROC曲线和曲线下面积（AUC）
+### ROC curve and area under the curve (AUC)
 	    
 	    roc_auc = metrics.roc_auc_score(y_test, y_pred_prob)
 	    
-	    # roc_curve 返回3个对象，误报率，真阳性率和阈值
+	    # roc_curve Return 3 objects, false positive rate, true positive rate and threshold
 	    fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_prob)
 	    if plot == True:
 	        plt.figure()
@@ -450,11 +477,11 @@ browsing data
 	        plt.legend(loc="lower right")
 	        plt.show()
 	    
-	    # 定义一个接受阈值并打印灵敏度和特异性的函数
+	    # Define a function that accepts thresholds and prints sensitivity and specificity
 	    def evaluate_threshold(threshold):
 	        print('Specificity for ' + str(threshold) + ' :', 1 - fpr[thresholds > threshold][-1])
 
-	    # 设置阈值
+	    # Set threshold
 	    predict_mine = np.where(y_pred_prob > 0.50, 1, 0)
 	    confusion = metrics.confusion_matrix(y_test, predict_mine)
 	    print(confusion)
@@ -462,11 +489,11 @@ browsing data
 	    return accuracy
 
 
-使用交叉验证分数进行调整
+### Adjust using cross-validation scores
 
 	def tuningCV(knn):
 	    
-	    # 为KNN搜索K的最佳值
+	    # Search for the best value of K for KNN
 	    k_range = list(range(1, 31))
 	    k_scores = []
 	    for k in k_range:
@@ -480,24 +507,20 @@ browsing data
 	    plt.ylabel('Cross-Validated Accuracy')
 	    plt.show()
 
-使用GridSearchCV进行调整
+### Adjust using GridSearchCV
 
 	    def tuningGridSerach(knn):
-	    #More efficient parameter tuning using GridSearchCV
 	    # define the parameter values that should be searched
 	    k_range = list(range(1, 31))
 	    print(k_range)
 	    
-	    # create a parameter grid: map the parameter names to the values that should be searched
+	    # create a parameter grid
 	    param_grid = dict(n_neighbors=k_range)
 	    print(param_grid)
 	    
-	    # instantiate the grid
-	    grid = GridSearchCV(knn, param_grid, cv=10, scoring='accuracy')
-
 	    # fit the grid with data
+	    grid = GridSearchCV(knn, param_grid, cv=10, scoring='accuracy')
 	    grid.fit(X, y)
-	    
 	    # view the complete results (list of named tuples)
 	    grid.grid_scores_
 	    
@@ -510,7 +533,6 @@ browsing data
 	    grid_mean_scores = [result.mean_validation_score for result in grid.grid_scores_]
 	    print(grid_mean_scores)
 	    
-	    # plot the results
 	    plt.plot(k_range, grid_mean_scores)
 	    plt.xlabel('Value of K for KNN')
 	    plt.ylabel('Cross-Validated Accuracy')
@@ -521,15 +543,10 @@ browsing data
 	    print('GridSearch best params', grid.best_params_)
 	    print('GridSearch best estimator', grid.best_estimator_)
 
-
-
-
-
-
+### Adjust using tuningRandomizedSearchCV
 
 	    def tuningRandomizedSearchCV(model, param_dist):
 	    #Searching multiple parameters simultaneously
-	    # n_iter controls the number of searches
 	    rand = RandomizedSearchCV(model, param_dist, cv=10, scoring='accuracy', n_iter=10, random_state=5)
 	    rand.fit(X, y)
 	    rand.grid_scores_
@@ -546,12 +563,7 @@ browsing data
 	        best_scores.append(round(rand.best_score_, 3))
 	    print(best_scores)
 
-
-
-
-
-
-
+### Adjust using tuningMultParam
 
 	    def tuningMultParam(knn):
 	    
@@ -575,10 +587,8 @@ browsing data
 	    print('Multiparam. Best Score: ', grid.best_score_)
 	    print('Multiparam. Best Params: ', grid.best_params_)
 
-
-
-
-
+### Evaluating models
+#### Logistic Regression
 
 	    def logisticRegression():
 	    # train a logistic regression model on the training set
@@ -598,20 +608,12 @@ browsing data
 
 	    logisticRegression()
 
-
-
-
-
-
+#### KNeighbors Classifier
 
 	    def Knn():
 	    # Calculating the best parameters
 	    knn = KNeighborsClassifier(n_neighbors=5)
 	    
-	    # From https://github.com/justmarkham/scikit-learn-videos/blob/master/08_grid_search.ipynb
-	    #tuningCV(knn)
-	    #tuningGridSerach(knn)
-	    #tuningMultParam(knn)
 	    
 	    # define the parameter values that should be searched
 	    k_range = list(range(1, 31))
@@ -637,12 +639,7 @@ browsing data
 
 	    Knn()
 
-
-
-
-
-
-
+#### Decision Tree classifier
 
 	    def treeClassifier():
 	    # Calculating the best parameters
@@ -671,10 +668,7 @@ browsing data
 
 	    treeClassifier()
 
-
-
-
-
+#### Random Forests
 
 	    def randomForest():
 	    # Calculating the best parameters
@@ -703,11 +697,8 @@ browsing data
 	    methodDict['R. Forest'] = accuracy_score * 100
 
 	    randomForest()
-
-
-
-
-
+	    
+#### bagging
 
 	    def bagging():
 	    # Building and fitting 
@@ -727,10 +718,7 @@ browsing data
 	    bagging()
 
 
-
-
-
-
+#### boosting
 
 	    def boosting():
 	    # Building and fitting 
@@ -751,7 +739,7 @@ browsing data
 	    boosting()
 
 
-
+#### stacking
 
 	    def stacking():
 	    # Building and fitting 
