@@ -1,10 +1,10 @@
 ## Table of Contents  
-## Part I: Research background  
-## Part II: Data Description  
-## Part III: Data Processing  
-## Part IV: Data Visualization
-## Part V: Machine Learning
-## Part VI: Analysis Results  
+### Part I: Research background  
+### Part II: Data Description  
+### Part III: Data Processing  
+### Part IV: Data Visualization
+### Part V: Machine Learning
+### Part VI: Analysis Results  
 
 
 ## Part I: Research background  
