@@ -221,8 +221,8 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	print(missing_data)
 
 
-## Part III: Data Visualization
-### Explore the relationship between data
+## Part IV: Data Visualization
+### 1.Explore the relationship between data
 
 	#Covariance matrix
 	corrmat = train_df.corr()
@@ -237,22 +237,20 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	sns.set(font_scale=1.25)
 	hm = sns.heatmap(cm, cbar=True, annot=True, square=True, fmt='.2f', annot_kws={'size': 10}, yticklabels=cols.values, xticklabels=cols.values)
 	plt.show()
+![](ReasultPic/correlation matrix.png)
 
-## Part IV: Data Visualization
-
-### Age distribution and density distribution
+### 2.Age distribution and density distribution
 	plt.figure(figsize=(12,8))
 	sns.distplot(train_df["Age"], bins=24)
 	plt.title("Distribuition and density by Age")
 	plt.xlabel("Age")
 
-
-### Age distribution under treatment
+### 3.Age distribution under treatment
 	g = sns.FacetGrid(train_df, col='treatment', size=5)
 	g = g.map(sns.distplot, "Age")
 
 
-### Number of people who have received treatment
+### 4.Number of people who have received treatment
 	plt.figure(figsize=(12,8))
 	labels = labelDict['label_Gender']
 	g = sns.countplot(x="treatment", data=train_df)
@@ -261,7 +259,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.title('Total Distribuition by treated or not')	
 
 
-### Summary of age and gender distribution
+### 5.Summary of age and gender distribution
 	o = labelDict['label_age_range']
 
 	g = sns.factorplot(x="age_range", y="treatment", hue="Gender", data=train_df, kind="bar",  ci=None, size=5, aspect=2, legend_out = True)
@@ -279,7 +277,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.show()
 
 
-### Summary distribution of gender and family history
+### 6.Summary distribution of gender and family history
 	o = labelDict['label_family_history']
 	g = sns.factorplot(x="family_history", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -295,7 +293,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.show()
 
 
-### Provide mental health care and gender summary distribution
+### 7.Provide mental health care and gender summary distribution
 	o = labelDict['label_care_options']
 	g = sns.factorplot(x="care_options", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -312,7 +310,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 
 
-### Provide mental health benefits and gender distribution
+### 8.Provide mental health benefits and gender distribution
 	o = labelDict['label_benefits']
 	g = sns.factorplot(x="care_options", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -328,7 +326,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.show()
 
 
-### Work impact and gender summary distribution
+### 9.Work impact and gender summary distribution
 	o = labelDict['label_work_interfere']
 	g = sns.factorplot(x="work_interfere", y="treatment", hue="Gender", data=train_df, kind="bar", ci=None, size=5, aspect=2, legend_out = True)
 	g.set_xticklabels(o)
@@ -601,7 +599,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    print('Multiparam. Best Params: ', grid.best_params_)
 
 ### Evaluating models
-#### Logistic Regression
+#### 1.Logistic Regression
 
 	    def logisticRegression():
 	    # train a logistic regression model on the training set
@@ -621,7 +619,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	    logisticRegression()
 
-#### KNeighbors Classifier
+#### 2.KNeighbors Classifier
 
 	    def Knn():
 	    # Calculating the best parameters
@@ -652,7 +650,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	    Knn()
 
-#### Decision Tree classifier
+#### 3.Decision Tree classifier
 
 	    def treeClassifier():
 	    # Calculating the best parameters
@@ -681,7 +679,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	    treeClassifier()
 
-#### Random Forests
+#### 4.Random Forests
 
 	    def randomForest():
 	    # Calculating the best parameters
@@ -711,7 +709,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	    randomForest()
 	    
-#### bagging
+#### 5.bagging
 
 	    def bagging():
 	    # Building and fitting 
@@ -731,7 +729,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    bagging()
 
 
-#### boosting
+#### 6.boosting
 
 	    def boosting():
 	    # Building and fitting 
@@ -752,7 +750,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    boosting()
 
 
-#### stacking
+#### 7.stacking
 
 	    def stacking():
 	    # Building and fitting 
