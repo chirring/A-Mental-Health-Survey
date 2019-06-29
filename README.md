@@ -388,7 +388,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 *  From the figure:
 * Employers provide a greater proportion of mental health benefits, but there are uncertainties – employees can’t judge whether they are available or not, and they have a big impact on the outcome, and their weight is roughly the same as “not offered”.
 * Women have a greater need for mental health care, but they may also be affected by the trans factor. It is something that cannot be processed and cannot be judged.
-* Comparing Figure 7 and Figure 8, the distribution of mental health and mental health is similar, so it is speculated that mental problems often come from mental health problems.  
+* The distribution of mental health and mental health is similar, so it is speculated that mental problems often come from mental health problems.  
   
   
 
