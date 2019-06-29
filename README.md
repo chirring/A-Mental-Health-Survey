@@ -3,7 +3,24 @@
 * Part II: Data Description  
 * Part III: Data Processing  
 * Part IV: Data Visualization
+* &emsp;&emsp;1.Explore the relationship between data
+* &emsp;&emsp;2.Age distribution and density distribution
+* &emsp;&emsp;3.Age distribution under treatment
+* &emsp;&emsp;4.Number of people who have received treatment
+* &emsp;&emsp;5.Summary of age and gender distribution
+* &emsp;&emsp;6.Summary distribution of gender and family history
+* &emsp;&emsp;7.Provide mental health care and gender summary distribution
+* &emsp;&emsp;8.Provide mental health benefits and gender distribution
+* &emsp;&emsp;9.Work impact and gender summary distribution
 * Part V: Machine Learning
+* &emsp;&emsp;1.Logistic Regression
+* &emsp;&emsp;2.KNeighbors Classifier
+* &emsp;&emsp;3.Decision Tree classifier
+* &emsp;&emsp;4.Random Forests
+* &emsp;&emsp;5.bagging
+* &emsp;&emsp;6.boosting
+* &emsp;&emsp;7.stacking
+* &emsp;&emsp;8.Success method plot 
 * Part VI: Analysis Results  
    
    
@@ -237,7 +254,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	sns.set(font_scale=1.25)
 	hm = sns.heatmap(cm, cbar=True, annot=True, square=True, fmt='.2f', annot_kws={'size': 10}, yticklabels=cols.values, xticklabels=cols.values)
 	plt.show()
-![](ReasultPic/correlation matrix.png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/correlation%20matrix.png)
 
 ### 2.Age distribution and density distribution
 	plt.figure(figsize=(12,8))
@@ -245,10 +262,12 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.title("Distribuition and density by Age")
 	plt.xlabel("Age")
 
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Distribuition%20and%20density%20by%20Age.png)
+
 ### 3.Age distribution under treatment
 	g = sns.FacetGrid(train_df, col='treatment', size=5)
 	g = g.map(sns.distplot, "Age")
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Separate%20by%20treatment.png)
 
 ### 4.Number of people who have received treatment
 	plt.figure(figsize=(12,8))
@@ -257,7 +276,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	g.set_xticklabels(labels)
 
 	plt.title('Total Distribuition by treated or not')	
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Total%20Distribuition%20by%20treated%20or%20not.png)
 
 ### 5.Summary of age and gender distribution
 	o = labelDict['label_age_range']
@@ -275,7 +294,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition%EF%BC%88age_range%EF%BC%89.png)
 
 ### 6.Summary distribution of gender and family history
 	o = labelDict['label_family_history']
@@ -291,7 +310,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(family_history).png)
 
 ### 7.Provide mental health care and gender summary distribution
 	o = labelDict['label_care_options']
@@ -307,7 +326,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(care_options).png)
 
 
 ### 8.Provide mental health benefits and gender distribution
@@ -324,7 +343,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(benefits).png)
 
 ### 9.Work impact and gender summary distribution
 	o = labelDict['label_work_interfere']
@@ -340,7 +359,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(work_interfere).png)
 
 ## Part V: Machine Learning
 ### Scaling and fitting
@@ -380,7 +399,7 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	plt.xticks(range(X.shape[1]), labels, rotation='vertical')
 	plt.xlim([-1, X.shape[1]])
 	plt.show()
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Feature%20importances.png)
 
 ### Classification model evaluation
 
@@ -617,7 +636,11 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    methodDict['Log. Regres.'] = accuracy_score * 100
 
 
-	    logisticRegression()
+	    logisticRegression()  
+	    
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/logisticRegression_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/logisticRegression_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/logisticRegression_ROC%20curve%20for%20treatment%20classifier.png)  
 
 #### 2.KNeighbors Classifier
 
@@ -650,6 +673,10 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	    Knn()
 
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Knn_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Knn_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Knn_ROC%20curve%20for%20treatment%20classifier.png)  
+
 #### 3.Decision Tree classifier
 
 	    def treeClassifier():
@@ -678,6 +705,10 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    methodDict['Tree clas.'] = accuracy_score * 100
 
 	    treeClassifier()
+
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/treeClassifier_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/treeClassifier_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/treeClassifier_ROC%20curve%20for%20treatment%20classifier.png)  
 
 #### 4.Random Forests
 
@@ -708,7 +739,11 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    methodDict['R. Forest'] = accuracy_score * 100
 
 	    randomForest()
-	    
+
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/randomForest_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/randomForest_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/randomForest_ROC%20curve%20for%20treatment%20classifier.png)  
+
 #### 5.bagging
 
 	    def bagging():
@@ -729,6 +764,10 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    bagging()
 
 
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/bagging_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/bagging_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/bagging_ROC%20curve%20for%20treatment%20classifier.png)  
+
 #### 6.boosting
 
 	    def boosting():
@@ -748,6 +787,10 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    methodDict['Boosting'] = accuracy_score * 100
 
 	    boosting()
+
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/boosting_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/boosting_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/boosting_ROC%20curve%20for%20treatment%20classifier.png)  
 
 
 #### 7.stacking
@@ -772,3 +815,36 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	    methodDict['Stacking'] = accuracy_score * 100
 
 	    stacking()
+
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/stacking_Confusion%20Matrix.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/stacking_Histogram%20of%20predicted%20probabilities.png)  
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/stacking_ROC%20curve%20for%20treatment%20classifier.png)  
+  
+  
+  
+  ### 8.Success method plot  
+  
+  	def plotSuccess():
+	    s = pd.Series(methodDict)
+	    s = s.sort_values(ascending=False)
+	    plt.figure(figsize=(12,8))
+	    #Colors
+	    ax = s.plot(kind='bar') 
+	    for p in ax.patches:
+	        ax.annotate(str(round(p.get_height(),2)), (p.get_x() * 1.005, p.get_height() * 1.005))
+	    plt.ylim([70.0, 90.0])
+	    plt.xlabel('Method')
+	    plt.ylabel('Percentage')
+	    plt.title('Success of methods')
+	     
+	    plt.show()
+	    
+	    plotSuccess()
+
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Success%20of%20methods.png)  
+  
+  
+  
+  
+  
+## Part VI: Analysis Results 
