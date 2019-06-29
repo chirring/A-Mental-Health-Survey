@@ -97,10 +97,6 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	from sklearn.metrics import accuracy_score, mean_squared_error, precision_recall_curve
 	from sklearn.model_selection import cross_val_score
 
-	#Neural Networks
-	from sklearn.neural_network import MLPClassifier
-	from sklearn.grid_search import RandomizedSearchCV
-
 	#Bagging
 	from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 	from sklearn.neighbors import KNeighborsClassifier
