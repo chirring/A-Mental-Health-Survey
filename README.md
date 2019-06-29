@@ -255,19 +255,36 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	hm = sns.heatmap(cm, cbar=True, annot=True, square=True, fmt='.2f', annot_kws={'size': 10}, yticklabels=cols.values, xticklabels=cols.values)
 	plt.show()
 ![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/correlation%20matrix.png)
-
+  
+* As can be seen from the covariance matrix, the three correlation coefficients are:
+* A. Impact on work and treatment
+* B. Providing health resources and employee health plans
+* C. Mental Health Benefits and Mental Health Care
+  
+  
 ### 2.Age distribution and density distribution
 	plt.figure(figsize=(12,8))
 	sns.distplot(train_df["Age"], bins=24)
 	plt.title("Distribuition and density by Age")
 	plt.xlabel("Age")
 
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Distribuition%20and%20density%20by%20Age.png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Distribuition%20and%20density%20by%20Age.png)  
+  
+  
+* From the figure:
+* The age of the respondents is mainly concentrated between 5 and 25 years old. The people in this age group are high-frequency people who are exposed to computer information.
+* Data defects: There are errors in survey data at 10 years old and 21-22 years old, which do not meet the overall trend change.
+* Data needs to be optimized: I think the age of the main survey population can be optimized. Children who are too young and young are starting to get in touch with the computer, but the pressure is not great, and it is not easy to cause mental health problems. The 30-40 year olds have been promoted to the company's seniority. R&D personnel or department managers are more likely to expose mental health problems
 
 ### 3.Age distribution under treatment
 	g = sns.FacetGrid(train_df, col='treatment', size=5)
 	g = g.map(sns.distplot, "Age")
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Separate%20by%20treatment.png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Separate%20by%20treatment.png)  
+  
+  
+* From the figure:
+* The distribution density maps of treated and untreated populations are roughly the same, and the survey ages are mainly concentrated in 5 to 25 years old.
+* The main population with treatment is slightly larger than the main population without treatment, which may be due to the need to track the treatment of the population.
 
 ### 4.Number of people who have received treatment
 	plt.figure(figsize=(12,8))
@@ -276,7 +293,13 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 	g.set_xticklabels(labels)
 
 	plt.title('Total Distribuition by treated or not')	
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Total%20Distribuition%20by%20treated%20or%20not.png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Total%20Distribuition%20by%20treated%20or%20not.png)  
+  
+  
+* From the figure:
+* The gender distribution of the survey population is even, the proportion of men and women is almost the same, and the sample can reduce the difference due to gender.
+* Data advantages: There is a certain difference in gender ratio in the IT industry. If random sampling is used, it is prone to gender-related differences, such as mental health problems caused by men’s pressure from the breadwinner, which will greatly affect the investigation. result.  
+
 
 ### 5.Summary of age and gender distribution
 	o = labelDict['label_age_range']
@@ -294,7 +317,13 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition%EF%BC%88age_range%EF%BC%89.png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition%EF%BC%88age_range%EF%BC%89.png)  
+  
+  
+* From the figure:
+* In terms of the overall number, 21-30 years old is a high-risk period requiring treatment. The reason may be that you have just entered the workplace and are unable to deal with problems and are prone to mental health problems.
+* Women who need treatment for each age group have changed little, while men have risen slowly, but they may also be affected by the trans factor. It is some unprocessable data and it is impossible to judge what gender.  
+
 
 ### 6.Summary distribution of gender and family history
 	o = labelDict['label_family_history']
@@ -310,7 +339,12 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(family_history).png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(family_history).png)  
+  
+  
+* From the figure:
+* Family history has a certain impact on mental health, that is, it may be a genetic problem, employees can pay more attention to whether family members have mental health problems.
+* Women are more susceptible to family medical history, but they may also be affected by the trans factor. It is something that cannot be processed and cannot determine what gender.
 
 ### 7.Provide mental health care and gender summary distribution
 	o = labelDict['label_care_options']
@@ -326,7 +360,12 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(care_options).png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(care_options).png)  
+  
+  
+* From the figure:
+* Employers provide a large proportion of mental health care, but there are uncertainties – employees can’t judge whether they are available or not, and they have a big impact on the results. Its proportion is roughly the same as “not provided”.
+* Women's need for mental health care is greater, of course, but it may also be due to the influence of the trans factor, which is something that cannot be processed and cannot determine what gender.  
 
 
 ### 8.Provide mental health benefits and gender distribution
@@ -343,7 +382,15 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(benefits).png)
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(benefits).png)  
+  
+  
+*  From the figure:
+* Employers provide a greater proportion of mental health benefits, but there are uncertainties – employees can’t judge whether they are available or not, and they have a big impact on the outcome, and their weight is roughly the same as “not offered”.
+* Women have a greater need for mental health care, but they may also be affected by the trans factor. It is something that cannot be processed and cannot be judged.
+* Comparing Figure 7 and Figure 8, the distribution of mental health and mental health is similar, so it is speculated that mental problems often come from mental health problems.  
+  
+  
 
 ### 9.Work impact and gender summary distribution
 	o = labelDict['label_work_interfere']
@@ -359,8 +406,16 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
 
 	g.fig.subplots_adjust(top=0.9,right=0.8)
 	plt.show()
-![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(work_interfere).png)
-
+![](https://github.com/chirring/Visualization-and-Machine-learning-of-a-tech-survey/blob/master/ReasultPic/Probability%20of%20mental%20health%20condition(work_interfere).png)  
+  
+  
+  
+*  From the figure:
+* Mental health problems have a great impact on work and often have serious consequences.
+* Compared with men, women are more affected by mental health problems.
+  
+  
+  
 ## Part V: Machine Learning
 ### Scaling and fitting
 
@@ -848,3 +903,11 @@ The data comes from the osmi website, the full name of Open Sourcing Mental Illn
   
   
 ## Part VI: Analysis Results 
+1. Mental health will have an impact on work.
+2. Employees need to pay more attention to the mental health of family members.
+3. Women are more affected by mental health than men.
+&emsp;&emsp;However, in the gender-related statistics, due to the existence of trans data, the data is missing in the process of collecting or processing, and it is impossible to identify the gender, and the proportion is still quite large, so the conclusion is flawed.
+4. At present, most employers provide mental health or mental health treatment services to employees.
+&emsp;&emsp;Similarly, data is missing in the process of acquisition or processing, and there are quite a few uncertain findings, so the conclusion is flawed.  
+5.  Calculate the importance of features, you can get the order of importance: age > gender > family history > whether there is a corresponding treatment  
+6. Comparing the accuracy of the seven algorithms: the classification accuracy of boosting is the highest, while the accuracy of stacking and bagging algorithms is relatively low.
